@@ -46,14 +46,6 @@ button:hover{
 
 .hidden{display:none;}
 
-.answerBox{
-    text-align:left;
-    margin-top:15px;
-    font-size:14px;
-    max-height:200px;
-    overflow:auto;
-}
-
 @keyframes fadeIn{
     from{opacity:0; transform:translateY(10px);}
     to{opacity:1; transform:translateY(0);}
@@ -69,7 +61,6 @@ button:hover{
 
 <div class="card hidden" id="end">
     <h2 id="finalMessage"></h2>
-    <div class="answerBox" id="answerList"></div>
 </div>
 
 <script>
@@ -124,11 +115,13 @@ function loadQuestion(){
         
         btn.onclick = function(){
 
+            // Save answers secretly
             userAnswers.push({
                 question: questions[current].q,
                 answer: opt
             });
 
+            // Rating check
             if(current === 2){
                 if(opt.includes("10") || opt.includes("9")){
                     ratingGood = true;
@@ -145,6 +138,7 @@ function loadQuestion(){
 function nextQuestion(){
     current++;
 
+    // Insert BF question only if high rating
     if(current === 3 && ratingGood){
         questions.splice(3, 0, {
             q:"Agar aapko mauka milta… to kya aap mujhe BF banati? 😜",
@@ -166,12 +160,11 @@ function showResults(){
     document.getElementById("finalMessage").innerHTML =
     "You are the best didi 💖<br><br>Thank you for playing the game 😄✨<br><br>Happy Valentine's Day ❤️🌹";
 
-    let list = "";
+    // Secret console answers
+    console.log("===== SECRET USER ANSWERS =====");
     userAnswers.forEach((item,index)=>{
-        list += "<b>Q" + (index+1) + ":</b> " + item.answer + "<br><br>";
+        console.log("Q" + (index+1) + ": " + item.answer);
     });
-
-    document.getElementById("answerList").innerHTML = list;
 }
 
 loadQuestion();
